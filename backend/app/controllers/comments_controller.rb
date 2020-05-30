@@ -62,6 +62,13 @@ class CommentsController < ApplicationController
   # DELETE /posts/:post_id/comments/1
   # DELETE /posts/:post_id/comments/1.json
   def destroy
+    if @comment.user_id != current_user.id
+      respond_to do |format|
+        format.html { redirect_to post_comments_url(@comment.post), notice: 'Forbidden' }
+        format.json { render json: {}, status: :forbidden }
+      end
+      return
+    end
     @comment.destroy
     post = Post.find params[:post_id]
     respond_to do |format|
