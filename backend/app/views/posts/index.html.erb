@@ -16,7 +16,14 @@
       <tr>
         <td><%= post.user.email %></td>
         <td><img width="200" src="<%= post.src %>" /></td>
+        <td>likes: <%= post.likes_count %></td>
         <td><%= link_to 'Show', post %></td>
+        <td><% if post.liked? @user %>
+          <%= link_to 'dislike', post_dislike_it_url(post), method: :post %>
+        <% else %>
+          <%= link_to 'like', post_like_it_url(post), method: :post %>
+        <% end %>
+        </td>
         <td><%= link_to 'Comments', post_comments_url(post) %></td>
         <td><%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>

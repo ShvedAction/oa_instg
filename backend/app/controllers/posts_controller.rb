@@ -6,6 +6,7 @@ class PostsController < ApplicationController
   # GET /posts.json
   def index
     @posts = Post.all.includes(:user)
+    @user = current_user
   end
 
   # GET /posts/1
@@ -16,6 +17,35 @@ class PostsController < ApplicationController
   # GET /posts/new
   def new
     @post = Post.new
+  end
+
+  # POST /posts/:post_id/like_it
+  def like_it
+    @post = Post.find(params[:post_id])
+    like = @post.likes.new(user: current_user)
+    respond_to do |format|
+      if like.save
+        format.html { redirect_to @post, notice: 'Like was successfully created.' }
+        format.json { render :show, status: :created, location: @post }
+      else
+        format.html { render :new }
+        format.json { render json: like.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # POST /posts/:post_id/dislike_it
+  def dislike_it
+    @post = Post.find(params[:post_id])
+    respond_to do |format|
+      if Like.where(user: current_user, post: @post).delete_all
+        format.html { redirect_to @post, notice: 'Like was successfully deleted.' }
+        format.json { render :show, status: :created, location: @post }
+      else
+        format.html { render :new }
+        format.json { render json: "unknown error", status: :unprocessable_entity }
+      end
+    end
   end
 
   # POST /posts
