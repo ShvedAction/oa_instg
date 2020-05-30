@@ -30,8 +30,8 @@ class PostsController < ApplicationController
       file.write(uploaded_io.read)
     end
 
-    params[:post][:src] = 'upload/'+uploaded_io.original_filename
-    
+    params[:post][:src] = '/upload/'+uploaded_io.original_filename
+
     @post = Post.new(post_params)
 
     respond_to do |format|
