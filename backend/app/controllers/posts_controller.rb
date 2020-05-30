@@ -1,10 +1,11 @@
 class PostsController < ApplicationController
   before_action :set_post, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!
 
   # GET /posts
   # GET /posts.json
   def index
-    @posts = Post.all
+    @posts = Post.all.includes(:user)
   end
 
   # GET /posts/1
@@ -26,11 +27,10 @@ class PostsController < ApplicationController
   def create
     
     uploaded_io = params[:post][:src]
-    user = User.find params[:post][:user_id]
-    p Uploader
+
     file_path = Uploader.upload(uploaded_io)
 
-    @post = Post.new(user: user, src: file_path)
+    @post = Post.new(user: current_user, src: file_path)
 
     respond_to do |format|
       if @post.save
