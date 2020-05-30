@@ -26,13 +26,11 @@ class PostsController < ApplicationController
   def create
     
     uploaded_io = params[:post][:src]
-    File.open(Rails.root.join('public', 'upload', uploaded_io.original_filename), 'wb') do |file|
-      file.write(uploaded_io.read)
-    end
+    user = User.find params[:post][:user_id]
+    p Uploader
+    file_path = Uploader.upload(uploaded_io)
 
-    params[:post][:src] = '/upload/'+uploaded_io.original_filename
-
-    @post = Post.new(post_params)
+    @post = Post.new(user: user, src: file_path)
 
     respond_to do |format|
       if @post.save
@@ -80,3 +78,7 @@ class PostsController < ApplicationController
       params.require(:post).permit(:user_id, :src)
     end
 end
+
+
+
+p "HERE I AM controller\n"
