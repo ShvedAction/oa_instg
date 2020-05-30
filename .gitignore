@@ -1,0 +1,4 @@
+db/mnt/*
+!db/mnt/.keep
+
+arh.txt
