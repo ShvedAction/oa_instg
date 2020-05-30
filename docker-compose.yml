@@ -6,3 +6,5 @@ services:
       - ./db/mnt/data:/var/lib/postgresql/data
     env_file:
       - common-variables.env
+    ports: 
+      - 5432:5432
