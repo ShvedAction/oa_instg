@@ -1,0 +1,8 @@
+version: '3'
+services:
+  db:
+    image: postgres
+    volumes:
+      - ./db/mnt/data:/var/lib/postgresql/data
+    env_file:
+      - common-variables.env
