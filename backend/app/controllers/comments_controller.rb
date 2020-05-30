@@ -1,5 +1,6 @@
 class CommentsController < ApplicationController
   before_action :set_comment, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!
 
   # GET /comments
   # GET /comments.json
@@ -12,24 +13,31 @@ class CommentsController < ApplicationController
   def show
   end
 
-  # GET /comments/new
+  # GET /posts/:post_id/comments/new
   def new
-    @comment = Comment.new
+    @post = Post.find params[:post_id]
+    @comment = Comment.new(post: @post, user: current_user)
   end
 
   # GET /comments/1/edit
   def edit
   end
 
-  # POST /comments
-  # POST /comments.json
+  # POST /posts/:post_id/comments
+  # POST /posts/:post_id/comments.json
   def create
-    @comment = Comment.new(comment_params)
+    post = Post.find params[:post_id]
+    proto = {
+      user: current_user,
+      post: post,
+      body: comment_params[:body]
+    }
+    @comment = Comment.new(proto)
 
     respond_to do |format|
       if @comment.save
-        format.html { redirect_to @comment, notice: 'Comment was successfully created.' }
-        format.json { render :show, status: :created, location: @comment }
+        format.html { redirect_to post_comments_url(post), notice: 'Comment was successfully created.' }
+        format.json { render :show, status: :created, location: [post, @comment] }
       else
         format.html { render :new }
         format.json { render json: @comment.errors, status: :unprocessable_entity }
@@ -51,12 +59,13 @@ class CommentsController < ApplicationController
     end
   end
 
-  # DELETE /comments/1
-  # DELETE /comments/1.json
+  # DELETE /posts/:post_id/comments/1
+  # DELETE /posts/:post_id/comments/1.json
   def destroy
     @comment.destroy
+    post = Post.find params[:post_id]
     respond_to do |format|
-      format.html { redirect_to comments_url, notice: 'Comment was successfully destroyed.' }
+      format.html { redirect_to post_comments_url(post), notice: 'Comment was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

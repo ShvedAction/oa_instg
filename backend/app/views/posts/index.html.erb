@@ -17,6 +17,7 @@
         <td><%= post.user.email %></td>
         <td><img width="200" src="<%= post.src %>" /></td>
         <td><%= link_to 'Show', post %></td>
+        <td><%= link_to 'Comments', post_comments_url(post) %></td>
         <td><%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
