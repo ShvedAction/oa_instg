@@ -1,26 +1,18 @@
 class CommentsController < ApplicationController
-  before_action :set_comment, only: [:show, :edit, :update, :destroy]
+  before_action :set_comment, only: [:show,  :destroy]
+  before_action :set_post
   before_action :authenticate_user!
 
-  # GET /comments
-  # GET /comments.json
+  # GET /posts/:post_id/comments
+  # GET /posts/:post_id/comments.json
   def index
-    @comments = Comment.all.includes(:user)
-  end
-
-  # GET /comments/1
-  # GET /comments/1.json
-  def show
+    @comments = @post.comments.includes(:user)
   end
 
   # GET /posts/:post_id/comments/new
   def new
     @post = Post.find params[:post_id]
     @comment = Comment.new(post: @post, user: current_user)
-  end
-
-  # GET /comments/1/edit
-  def edit
   end
 
   # POST /posts/:post_id/comments
@@ -45,22 +37,8 @@ class CommentsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /comments/1
-  # PATCH/PUT /comments/1.json
-  def update
-    respond_to do |format|
-      if @comment.update(comment_params)
-        format.html { redirect_to @comment, notice: 'Comment was successfully updated.' }
-        format.json { render :show, status: :ok, location: @comment }
-      else
-        format.html { render :edit }
-        format.json { render json: @comment.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # DELETE /posts/:post_id/comments/1
-  # DELETE /posts/:post_id/comments/1.json
+  # DELETE /posts/:post_id/comments/:id
+  # DELETE /posts/:post_id/comments/:id.json
   def destroy
     if @comment.user_id != current_user.id
       respond_to do |format|
@@ -81,6 +59,10 @@ class CommentsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_comment
       @comment = Comment.find(params[:id])
+    end
+
+    def set_post
+      @post = Post.find(params[:post_id])
     end
 
     # Only allow a list of trusted parameters through.
