@@ -11,6 +11,7 @@ import { ICardProps, IComment } from "./interfaces";
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import { Collapse, TextField } from '@material-ui/core';
+import SendIcon from '@material-ui/icons/Send';
 
 const useStyles = makeStyles({
   root: {
@@ -20,7 +21,13 @@ const useStyles = makeStyles({
   img: {
     width: "100%"
   },
-
+  sendComment: {
+    position: 'absolute',
+    right: 20
+  },
+  buttons: {
+    position: 'relative',
+  }
 });
 
 export default function MediaCard(props: ICardProps) {
@@ -49,7 +56,7 @@ export default function MediaCard(props: ICardProps) {
         </CardContent>
       </CardActionArea>
       <form onSubmit={onSubmit}>
-        <CardActions>
+        <CardActions className={classes.buttons}>
           <Button size="small" color="primary" onClick={() => {
             if (props.likedPost) {
               props.onDislike();
@@ -64,10 +71,15 @@ export default function MediaCard(props: ICardProps) {
           </Button>
           <Button size="small" color="primary" onClick={() => setExpanded(!expanded)}>
             Comment
-        </Button>
-          <Collapse in={expanded} timeout="auto" unmountOnExit>
-            <Button size="small" color="primary" type="submit">
-              sendComment
+          </Button>
+          <Collapse className={classes.sendComment} in={expanded} timeout="auto" unmountOnExit>
+            <Button
+              variant="contained"
+              color="primary"
+              type="submit"
+              endIcon={<SendIcon />}
+            >
+              Send
             </Button>
           </Collapse>
         </CardActions>
