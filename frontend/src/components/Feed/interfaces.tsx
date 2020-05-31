@@ -1,0 +1,23 @@
+export interface IFeedProps {
+  items: IFeedItem[];
+}
+
+export interface IComment {
+  body: string;
+  author: string;
+}
+
+export interface IFeedItem {
+  id: number;
+  likesCount: number;
+  author: string;
+  src: string;
+  comments: IComment[];
+  createdAt: string;
+  likedPost: boolean;
+}
+
+export interface ICardProps extends IFeedItem {
+  onLike: () => void;
+  onDislike: () => void;
+}

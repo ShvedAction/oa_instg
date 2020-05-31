@@ -18,3 +18,7 @@ export function checkAuth() {
     return r.json();
   });
 }
+
+export function getPosts(){
+  return fetch('/api/posts.json').then(r => r.json())
+}
