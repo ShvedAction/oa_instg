@@ -41,4 +41,5 @@ yarn-debug.log*
 .yarn-integrity
 
 
-/public/upload
+/public/upload/*
+!/public/upload/.keep
