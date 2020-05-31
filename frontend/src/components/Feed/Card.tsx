@@ -35,7 +35,7 @@ export default function MediaCard(props: ICardProps) {
             Комментарии
           </Typography>
           {props.comments.map((comment: IComment) => (
-            <Typography variant="body2" color="textSecondary" component="p">
+            <Typography key={comment.createdAt} variant="body2" color="textSecondary" component="p">
               <b>{comment.author}, {comment.createdAt}</b>: {comment.body}
             </Typography>
           ))}

@@ -4,16 +4,18 @@ import { makeStyles } from '@material-ui/core/styles';
 import Card from "./Card";
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 const useStyles = makeStyles({
-  upload: {
+  controls: {
     position: 'fixed',
     zIndex: 100,
-    right: '20px',
-    bottom: '20px'
+    right: 20,
+    bottom: 20
   },
   fab: {
-    position: 'relative'
+    position: 'relative',
+    margin: 10
   },
   input: {
     position: 'absolute',
@@ -31,19 +33,24 @@ export default function Feed(props: IFeedProps) {
   const formRef = useRef<HTMLFormElement>(null);
 
   return <>
-    <form className={classes.upload} ref={formRef}>
-      <Fab color="primary" aria-label="add" type="submit" className={classes.fab}>
-        <input
-          accept="image/png,image/gif,image/jpeg"
-          type="file" name="post[src]"
-          className={classes.input}
-          onChange={() => {
-            props.onUpload(new FormData(formRef.current!))
-          }}
-        />
-        <AddIcon />
-      </Fab>
-    </form>
+    <div className={classes.controls} >
+        <Fab color="primary" onClick={props.onLogout} className={classes.fab}>
+          <ExitToAppIcon />
+        </Fab>
+      <form ref={formRef}>
+        <Fab color="primary" aria-label="add" type="submit" className={classes.fab}>
+          <input
+            accept="image/png,image/gif,image/jpeg"
+            type="file" name="post[src]"
+            className={classes.input}
+            onChange={() => {
+              props.onUpload(new FormData(formRef.current!))
+            }}
+          />
+          <AddIcon />
+        </Fab>
+      </form>
+    </div>
     {props.items.map((item: IFeedItem) => (
       <Card
         {...item}

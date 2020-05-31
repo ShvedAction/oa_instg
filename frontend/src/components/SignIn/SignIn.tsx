@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
 function SignIn(props: ISignInProps) {
   const classes = useStyles();
 
-  function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (e.currentTarget.checkValidity()) {
       const data = new FormData(e.currentTarget);

@@ -19,6 +19,10 @@ export function checkAuth() {
   });
 }
 
+export function logout(){
+  return fetch('/api/users/sessions.json', {method: "DELETE"})
+}
+
 export function addPost(data: FormData) {
   return fetch('api/posts', {
     method: 'POST',
