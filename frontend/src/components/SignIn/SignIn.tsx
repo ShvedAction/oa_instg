@@ -1,13 +1,9 @@
 import { SignInProps } from "./interfaces";
-import React from 'react';
+import React, { useRef } from 'react';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
@@ -34,6 +30,20 @@ const useStyles = makeStyles((theme) => ({
 
 function SignIn(props: SignInProps) {
   const classes = useStyles();
+  const refForm = useRef<HTMLFormElement>(null);
+
+  function onSubmit(e:React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    console.log(e.currentTarget.checkValidity(), refForm.current)
+    // console.log(refForm.current?.checkValidity())
+    // const data = refForm && new FormData(refForm.current);
+
+    // fetch(url, {
+    //   method: 'POST',
+    //   body: JSON.stringify(data)
+    // })
+    // .then()
+  }
 
   return (
     <Container component="main" maxWidth="xs">
@@ -42,7 +52,7 @@ function SignIn(props: SignInProps) {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <form className={classes.form} noValidate>
+        <form className={classes.form} onSubmit={onSubmit} ref={refForm} noValidate>
           <TextField
             variant="outlined"
             margin="normal"
@@ -50,7 +60,7 @@ function SignIn(props: SignInProps) {
             fullWidth
             id="email"
             label="Email Address"
-            name="email"
+            name="user[email]"
             autoComplete="email"
             autoFocus
           />
@@ -59,7 +69,7 @@ function SignIn(props: SignInProps) {
             margin="normal"
             required
             fullWidth
-            name="password"
+            name="user[password]"
             label="Password"
             type="password"
             id="password"
