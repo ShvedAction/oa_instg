@@ -1,26 +1,43 @@
 export function signUser(data: FormData) {
-  return fetch('api/users/sessions.json', {
+  return fetch('/api/users/sessions.json', {
     method: 'POST',
     body: data
   }).then((r) => {
     if (r.status === 401) {
-      throw {body: "Wrong credentials"};
+      throw { body: "Wrong credentials" };
     }
     return r.json();
   });
 }
+
+export function signUp(data: FormData) {
+  return fetch('/api/users.json', {
+    method: 'POST',
+    body: data
+  }).then((r) => {
+    if (r.status === 422) {
+      return r.json().then((obj: any) => {
+        const body = Object.entries<string>(obj.errors)
+          .reduce((acc, el) => `${acc} ${el[0]}: ${el[1]};`, "")
+        throw { body };
+      })
+    }
+    return r.json();
+  });
+}
+
 
 export function checkAuth() {
   return fetch('/api/users/sessions.json').then((r) => {
     if (r.status === 401) {
-      throw {body: "No auth"};
+      throw { body: "No auth" };
     }
     return r.json();
   });
 }
 
-export function logout(){
-  return fetch('/api/users/sessions.json', {method: "DELETE"})
+export function logout() {
+  return fetch('/api/users/sessions.json', { method: "DELETE" })
 }
 
 export function addPost(data: FormData) {
@@ -29,22 +46,22 @@ export function addPost(data: FormData) {
     body: data
   }).then((r) => {
     if (r.status === 401) {
-      throw {body: "Wrong credentials"};
+      throw { body: "Wrong credentials" };
     }
     return r.json();
   });
 }
 
-export function getPosts(){
+export function getPosts() {
   return fetch('/api/posts.json').then(r => r.json())
 }
 
-export function setLike(post_id: number){
-  return fetch(`/api/posts/${post_id}/like_it`, {method: "POST"}).then(r => r.json())
+export function setLike(post_id: number) {
+  return fetch(`/api/posts/${post_id}/like_it`, { method: "POST" }).then(r => r.json())
 }
 
-export function setDisLike(post_id: number){
-  return fetch(`/api/posts/${post_id}/dislike_it`, {method: "POST"}).then(r => r.json())
+export function setDisLike(post_id: number) {
+  return fetch(`/api/posts/${post_id}/dislike_it`, { method: "POST" }).then(r => r.json())
 }
 
 export function uploadImage(data: FormData) {

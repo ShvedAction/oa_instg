@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import SignIn from './components/SignIn';
 import Alert from './components/error';
 import { checkAuth, getPosts, setLike, setDisLike, uploadImage, logout } from './api';
-import { IFeedProps, IFeedItem } from './components/Feed/interfaces'
+import { IFeedItem } from './components/Feed/interfaces'
 import Feed from './components/Feed'
 import SignUp from './components/SignUp/SignUp';
 
@@ -24,7 +24,6 @@ function App() {
   const [error, setError] = useState<IResponseError | null>(null);
   const [feedItems, setFeedItems] = useState<IFeedItem[]>([]);
   const [signInPage, setSignInPage] = useState<boolean>(true)
-  const classes = useStyles();
 
   useEffect(() => {
     if (!authChecked) {

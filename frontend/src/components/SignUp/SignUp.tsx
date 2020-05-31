@@ -7,12 +7,13 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { ISignUnProps } from './interfaces';
+import { signUp } from '../../api';
+import { IUser, IResponseError } from '../User/interfaces';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -37,7 +38,21 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignUp(props: ISignUnProps) {
   const classes = useStyles();
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (e.currentTarget.checkValidity()) {
+      const data = new FormData(e.currentTarget);
 
+      signUp(data)
+        .then((user: IUser) => {
+          props.setError(null);
+          props.setUser(user);
+        })
+        .catch((error: IResponseError) => {
+          props.setError(error);
+        })
+    }
+  }
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -48,12 +63,12 @@ export default function SignUp(props: ISignUnProps) {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <form className={classes.form} noValidate>
+        <form className={classes.form} onSubmit={onSubmit} noValidate>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
                 autoComplete="fname"
-                name="firstName"
+                name="user[firstName]"
                 variant="outlined"
                 required
                 fullWidth
@@ -69,7 +84,7 @@ export default function SignUp(props: ISignUnProps) {
                 fullWidth
                 id="lastName"
                 label="Last Name"
-                name="lastName"
+                name="user[lastName]"
                 autoComplete="lname"
               />
             </Grid>
@@ -80,7 +95,7 @@ export default function SignUp(props: ISignUnProps) {
                 fullWidth
                 id="email"
                 label="Email Address"
-                name="email"
+                name="user[email]"
                 autoComplete="email"
               />
             </Grid>
@@ -89,17 +104,11 @@ export default function SignUp(props: ISignUnProps) {
                 variant="outlined"
                 required
                 fullWidth
-                name="password"
+                name="user[password]"
                 label="Password"
                 type="password"
                 id="password"
                 autoComplete="current-password"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <FormControlLabel
-                control={<Checkbox value="allowExtraEmails" color="primary" />}
-                label="I want to receive inspiration, marketing promotions and updates via email."
               />
             </Grid>
           </Grid>
@@ -114,7 +123,7 @@ export default function SignUp(props: ISignUnProps) {
           </Button>
           <Grid container justify="flex-end">
             <Grid item>
-              <Link href="#" variant="body2" onClick={()=> props.setSignInPage(true)}>
+              <Link href="#" variant="body2" onClick={() => props.setSignInPage(true)}>
                 Already have an account? Sign in
               </Link>
             </Grid>

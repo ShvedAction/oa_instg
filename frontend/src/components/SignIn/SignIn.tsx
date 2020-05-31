@@ -1,7 +1,7 @@
 import { ISignInProps } from "./interfaces";
 import { signUser } from "../../api";
 import { IUser, IResponseError } from "../User/interfaces";
-import React, { useRef } from 'react';
+import React from 'react';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
@@ -44,6 +44,7 @@ function SignIn(props: ISignInProps) {
         .then((user: IUser) => {
           props.setError(null);
           props.setUser(user);
+          props.setSignInPage(true);
         })
         .catch((error: IResponseError) => {
           props.setError(error);
