@@ -22,3 +22,11 @@ export function checkAuth() {
 export function getPosts(){
   return fetch('/api/posts.json').then(r => r.json())
 }
+
+export function setLike(post_id: number){
+  return fetch(`/api/posts/${post_id}/like_it`, {method: "POST"}).then(r => r.json())
+}
+
+export function setDisLike(post_id: number){
+  return fetch(`/api/posts/${post_id}/dislike_it`, {method: "POST"}).then(r => r.json())
+}

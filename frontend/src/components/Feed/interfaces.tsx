@@ -1,5 +1,7 @@
 export interface IFeedProps {
   items: IFeedItem[];
+  onLike: (item: IFeedItem) => void;
+  onDislike: (item: IFeedItem) => void;
 }
 
 export interface IComment {

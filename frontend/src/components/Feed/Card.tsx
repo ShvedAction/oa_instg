@@ -8,6 +8,8 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { ICardProps } from "./interfaces";
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 
 const useStyles = makeStyles({
   root: {
@@ -48,7 +50,10 @@ export default function MediaCard(props: ICardProps) {
             props.onLike();
           }
         }}>
-          Like {props.likesCount}
+          {props.likedPost ? 
+          <FavoriteIcon/> :
+          <FavoriteBorderIcon /> 
+          } {props.likesCount}
         </Button>
         <Button size="small" color="primary">
           Comment
