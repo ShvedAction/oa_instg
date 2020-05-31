@@ -4,6 +4,11 @@ class Post < ApplicationRecord
   has_many :likes
   has_many :appreciators, through: :likes, source: :user
 
+  scope :feed,  -> {
+    includes(:user).
+    joins("LEFT OUTER JOIN comments ON comments.post_id = posts.id").order(created_at: :desc)
+  }
+
   def likes_count
     self.likes.count
   end
