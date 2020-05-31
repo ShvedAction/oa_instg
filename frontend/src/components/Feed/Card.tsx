@@ -7,17 +7,18 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import { ICardProps } from "./interfaces";
+import { ICardProps, IComment } from "./interfaces";
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 
 const useStyles = makeStyles({
   root: {
-    maxWidth: 345,
+    maxWidth: 800,
+    margin: '20px auto'
   },
-  media: {
-    height: 140,
-  },
+  img: {
+    width: "100%"
+  }
 });
 
 export default function MediaCard(props: ICardProps) {
@@ -26,20 +27,18 @@ export default function MediaCard(props: ICardProps) {
   return (
     <Card className={classes.root}>
       <CardActionArea>
-        <CardMedia
-          className={classes.media}
-          image={props.src}
-        />
+        <CardMedia>
+          <img src={props.src} className={classes.img} />
+        </CardMedia>
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
             Комментарии
           </Typography>
-          <Typography variant="body2" color="textSecondary" component="p">
-            Классная, фотка!
-          </Typography>
-          <Typography variant="body2" color="textSecondary" component="p">
-            Жги ещё!
-          </Typography>
+          {props.comments.map((comment: IComment) => (
+            <Typography variant="body2" color="textSecondary" component="p">
+              <b>{comment.author}, {comment.createdAt}</b>: {comment.body}
+            </Typography>
+          ))}
         </CardContent>
       </CardActionArea>
       <CardActions>

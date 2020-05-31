@@ -7,6 +7,7 @@ export interface IFeedProps {
 export interface IComment {
   body: string;
   author: string;
+  createdAt: string;
 }
 
 export interface IFeedItem {

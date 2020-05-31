@@ -7,4 +7,5 @@ json.likesCount post.likes.count
 json.comments post.comments do |comment|
   json.body comment.body
   json.author comment.user.email
+  json.createdAt comment.created_at
 end
