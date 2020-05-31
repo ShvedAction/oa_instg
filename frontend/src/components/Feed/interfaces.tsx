@@ -2,6 +2,7 @@ export interface IFeedProps {
   items: IFeedItem[];
   onLike: (item: IFeedItem) => void;
   onDislike: (item: IFeedItem) => void;
+  onUpload: (data: FormData) => void;
 }
 
 export interface IComment {

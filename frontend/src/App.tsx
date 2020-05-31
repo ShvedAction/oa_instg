@@ -3,9 +3,10 @@ import { IUser, IResponseError } from './components/User/interfaces';
 import { makeStyles } from '@material-ui/core/styles';
 import SignIn from './components/SignIn';
 import Alert from './components/error';
-import { checkAuth, getPosts, setLike, setDisLike } from './api';
+import { checkAuth, getPosts, setLike, setDisLike, uploadImage } from './api';
 import { IFeedProps, IFeedItem } from './components/Feed/interfaces'
 import Feed from './components/Feed'
+import SignUp from './components/SignUp/SignUp';
 
 const useStyles = makeStyles(() => ({
   error: {
@@ -22,6 +23,7 @@ function App() {
   const [authChecked, setAuthChecked] = useState<boolean>(false);
   const [error, setError] = useState<IResponseError | null>(null);
   const [feedItems, setFeedItems] = useState<IFeedItem[]>([]);
+  const [signInPage, setSignInPage] = useState<boolean>(true)
   const classes = useStyles();
 
   useEffect(() => {
@@ -65,16 +67,25 @@ function App() {
           <Feed
             items={feedItems}
             onLike={(item) => updateFeed(item.id, incLikes)}
-            onDislike={(item) => updateFeed(item.id, decLikes)} />
-        ) : 
-        (
-          <SignIn
-            setError={setError}
-            setUser={setUser} />
-        )
+            onDislike={(item) => updateFeed(item.id, decLikes)}
+            onUpload={(data) => uploadImage(data)}
+          />
+        ) :
+          (
+            signInPage ?
+              <SignIn
+                setError={setError}
+                setUser={setUser}
+                setSignInPage={setSignInPage} />
+              :
+              <SignUp
+                setError={setError}
+                setUser={setUser}
+                setSignInPage={setSignInPage} />
+          )
       ) : (
-        <div>Loading...</div>
-      )}
+          <div>Loading...</div>
+        )}
     </div>
   );
 }

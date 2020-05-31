@@ -9,6 +9,8 @@ import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import { Avatar } from "@material-ui/core";
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -33,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
 function SignIn(props: ISignInProps) {
   const classes = useStyles();
 
-  function onSubmit(e:React.FormEvent<HTMLFormElement>) {
+  function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (e.currentTarget.checkValidity()) {
       const data = new FormData(e.currentTarget);
@@ -53,6 +55,9 @@ function SignIn(props: ISignInProps) {
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
+        <Avatar className={classes.avatar}>
+          <LockOutlinedIcon />
+        </Avatar>
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
@@ -88,7 +93,7 @@ function SignIn(props: ISignInProps) {
           >
             Sign In
           </Button>
-          <Link href="#" variant="body2">
+          <Link href="#" variant="body2" onClick={() => props.setSignInPage(false)}>
             {"Don't have an account? Sign Up"}
           </Link>
         </form>
