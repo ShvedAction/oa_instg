@@ -1,6 +1,7 @@
 import { Dispatch, SetStateAction } from "react";
-import { IUser } from "../User/interfaces";
+import { IUser, IResponseError } from "../User/interfaces";
 
-export interface SignInProps {
+export interface ISignInProps {
   setUser: Dispatch<SetStateAction<IUser | null>>
+  setError: Dispatch<SetStateAction<IResponseError | null>>
 }

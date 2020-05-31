@@ -1,4 +1,6 @@
-import { SignInProps } from "./interfaces";
+import { ISignInProps } from "./interfaces";
+import { signUser } from "../../api";
+import { IUser, IResponseError } from "../User/interfaces";
 import React, { useRef } from 'react';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -28,21 +30,22 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function SignIn(props: SignInProps) {
+function SignIn(props: ISignInProps) {
   const classes = useStyles();
-  const refForm = useRef<HTMLFormElement>(null);
 
   function onSubmit(e:React.FormEvent<HTMLFormElement>) {
-    e.preventDefault()
-    console.log(e.currentTarget.checkValidity(), refForm.current)
-    // console.log(refForm.current?.checkValidity())
-    // const data = refForm && new FormData(refForm.current);
+    e.preventDefault();
+    if (e.currentTarget.checkValidity()) {
+      const data = new FormData(e.currentTarget);
 
-    // fetch(url, {
-    //   method: 'POST',
-    //   body: JSON.stringify(data)
-    // })
-    // .then()
+      signUser(data)
+        .then((user: IUser) => {
+          props.setUser(user);
+        })
+        .catch((error: IResponseError) => {
+          props.setError(error);
+        })
+    }
   }
 
   return (
@@ -52,7 +55,7 @@ function SignIn(props: SignInProps) {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <form className={classes.form} onSubmit={onSubmit} ref={refForm} noValidate>
+        <form className={classes.form} onSubmit={onSubmit} noValidate>
           <TextField
             variant="outlined"
             margin="normal"
