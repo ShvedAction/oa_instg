@@ -61,6 +61,7 @@ export default function Feed(props: IFeedProps) {
         onDislike={() => {
           props.onDislike(item);
         }}
+        onComment={props.onComment}
       />
     ))}
   </>

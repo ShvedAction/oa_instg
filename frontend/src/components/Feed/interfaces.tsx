@@ -3,6 +3,7 @@ export interface IFeedProps {
   onLike: (item: IFeedItem) => void;
   onDislike: (item: IFeedItem) => void;
   onUpload: (data: FormData) => void;
+  onComment: (post_id:number, data: FormData) => void;
   onLogout: () => void;
 }
 
@@ -25,4 +26,5 @@ export interface IFeedItem {
 export interface ICardProps extends IFeedItem {
   onLike: () => void;
   onDislike: () => void;
+  onComment: (post_id:number, data: FormData) => void;
 }

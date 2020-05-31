@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -10,6 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import { ICardProps, IComment } from "./interfaces";
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import { Collapse, TextField } from '@material-ui/core';
 
 const useStyles = makeStyles({
   root: {
@@ -18,12 +19,18 @@ const useStyles = makeStyles({
   },
   img: {
     width: "100%"
-  }
+  },
+
 });
 
 export default function MediaCard(props: ICardProps) {
   const classes = useStyles();
-
+  const [expanded, setExpanded] = useState(false);
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const data = new FormData(e.currentTarget)
+    props.onComment(props.id, data)
+  }
   return (
     <Card className={classes.root}>
       <CardActionArea>
@@ -41,23 +48,42 @@ export default function MediaCard(props: ICardProps) {
           ))}
         </CardContent>
       </CardActionArea>
-      <CardActions>
-        <Button size="small" color="primary" onClick={() => {
-          if (props.likedPost) {
-            props.onDislike();
-          } else {
-            props.onLike();
-          }
-        }}>
-          {props.likedPost ? 
-          <FavoriteIcon/> :
-          <FavoriteBorderIcon /> 
-          } {props.likesCount}
+      <form onSubmit={onSubmit}>
+        <CardActions>
+          <Button size="small" color="primary" onClick={() => {
+            if (props.likedPost) {
+              props.onDislike();
+            } else {
+              props.onLike();
+            }
+          }}>
+            {props.likedPost ?
+              <FavoriteIcon /> :
+              <FavoriteBorderIcon />
+            } {props.likesCount}
+          </Button>
+          <Button size="small" color="primary" onClick={() => setExpanded(!expanded)}>
+            Comment
         </Button>
-        <Button size="small" color="primary">
-          Comment
-        </Button>
-      </CardActions>
+          <Collapse in={expanded} timeout="auto" unmountOnExit>
+            <Button size="small" color="primary" type="submit">
+              sendComment
+            </Button>
+          </Collapse>
+        </CardActions>
+        <Collapse in={expanded} timeout="auto" unmountOnExit>
+          <CardContent>
+            <TextField
+              id="filled-textarea"
+              label="Add comment"
+              multiline
+              name="comment[body]"
+              variant="outlined"
+              fullWidth
+            />
+          </CardContent>
+        </Collapse>
+      </form>
     </Card>
   );
 }

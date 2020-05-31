@@ -71,4 +71,10 @@ export function uploadImage(data: FormData) {
   }).then(r => r.json())
 }
 
+export function sendComment(post_id: number, data: FormData){
+  return fetch(`/api/posts/${post_id}/comments.json`, {
+    method: "POST",
+    body: data
+  }).then(r => r.json())
+}
 // export function 

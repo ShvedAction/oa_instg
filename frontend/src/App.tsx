@@ -3,7 +3,7 @@ import { IUser, IResponseError } from './components/User/interfaces';
 import { makeStyles } from '@material-ui/core/styles';
 import SignIn from './components/SignIn';
 import Alert from './components/error';
-import { checkAuth, getPosts, setLike, setDisLike, uploadImage, logout } from './api';
+import { checkAuth, getPosts, setLike, setDisLike, uploadImage, logout, sendComment } from './api';
 import { IFeedItem } from './components/Feed/interfaces'
 import Feed from './components/Feed'
 import SignUp from './components/SignUp/SignUp';
@@ -56,6 +56,13 @@ function App() {
     });
   }
 
+  const addComent = (data: FormData) => (item: IFeedItem) => {
+    sendComment(item.id, data);
+    return Object.assign(item, {
+      comments: [...item.comments, {body: data.get("comment[body]"), author: "me", createdAt: "Now" }]
+    });
+  }
+
   const updateFeed = (id: number, transformer: (item: IFeedItem) => IFeedItem) => {
     setFeedItems(feedItems.map((curr) => (curr.id === id) ? transformer(curr) : curr));
   }
@@ -74,8 +81,9 @@ function App() {
             items={feedItems}
             onLike={(item) => updateFeed(item.id, incLikes)}
             onDislike={(item) => updateFeed(item.id, decLikes)}
-            onUpload={(data) => uploadImage(data)}
+            onUpload={(data) => uploadImage(data).then((post: IFeedItem) => setFeedItems([post, ...feedItems]))}
             onLogout={signOut}
+            onComment={(postId, data) => updateFeed(postId, addComent(data))}
           />
         ) :
           (
