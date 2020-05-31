@@ -40,6 +40,7 @@ function SignIn(props: ISignInProps) {
 
       signUser(data)
         .then((user: IUser) => {
+          props.setError(null);
           props.setUser(user);
         })
         .catch((error: IResponseError) => {
